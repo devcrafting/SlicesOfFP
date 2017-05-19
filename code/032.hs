@@ -1,14 +1,16 @@
 -- 032.hs
 import Test.Hspec
+import Data.Ord
+import PokerHands
 
-main = hspec $ do
-    describe "comparing card by rank" $ do
+main = hspec $
+    describe "comparing card by rank" $
         it "should follow the rules of poker" $ do
-            compare (rank (card "8d")) (rank (card "6h")) `shouldBe` GT
-            compare (rank (card "4d")) (rank (card "4h")) `shouldBe` EQ
-            compare (rank (card "9d")) (rank (card "Th")) `shouldBe` LT 
-            compare (rank (card "Td")) (rank (card "Jh")) `shouldBe` LT 
-            compare (rank (card "Jd")) (rank (card "Qh")) `shouldBe` LT 
-            compare (rank (card "Qd")) (rank (card "Kh")) `shouldBe` LT 
-            compare (rank (card "Kd")) (rank (card "Ah")) `shouldBe` LT 
+            comparing (rank . card) "8d" "6h" `shouldBe` GT
+            comparing (rank . card) "4d" "4h" `shouldBe` EQ
+            comparing (rank . card) "9d" "Th" `shouldBe` LT 
+            comparing (rank . card) "Td" "Jh" `shouldBe` LT 
+            comparing (rank . card) "Jd" "Qh" `shouldBe` LT 
+            comparing (rank . card) "Qd" "Kh" `shouldBe` LT 
+            comparing (rank . card) "Kd" "Ah" `shouldBe` LT 
 
