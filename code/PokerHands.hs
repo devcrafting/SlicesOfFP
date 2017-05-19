@@ -2,6 +2,7 @@ module PokerHands
 where
 import Data.Char
 import Data.List
+import Data.Ord
 
 data Suit = Hearts | Clubs | Diamonds | Spades
     deriving (Eq, Show)
@@ -21,7 +22,7 @@ suit = snd
 
 card [r,s] = (charToRank r, charToSuit s)
 
-
+groups = sortBy (flip (comparing length)) . group . ranks
 
 
 charToRank :: Char -> Rank
