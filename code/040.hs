@@ -1,8 +1,9 @@
 -- 040.hs
 import Test.Hspec
+import PokerHands 
 
-main = hspec $ do
-    describe "category" $ do
+main = hspec $ 
+    describe "category" $ 
         it "should determine the category of a hand" $ do
             let hs = ["4s 5d Kc Tc 3d"
                      ,"4s Kd Kc Tc 3d"
