@@ -15,7 +15,7 @@ type Card = (Rank, Suit)
 
 data Category = HighCard | OnePair | TwoPairs | ThreeOfAKind | Straight | Flush | FullHouse | FourOfAKind | StraightFlush | RoyalFlush deriving (Eq,Ord,Show)
 
-ranking cs = promote (cat,rs) where
+ranking cs = flush (isFlush cs) (promote (cat,rs)) where
     cat = category gs 
     rs = concat gs 
     gs = groups cs
@@ -23,6 +23,11 @@ ranking cs = promote (cat,rs) where
 promote (HighCard, [Ace, Five, _,_,_]) = (Straight, [Five, Four, Three, Two, Ace])
 promote (HighCard, rs) | isStraight rs = (Straight, rs)
 promote x = x
+
+flush True (HighCard, rs) = (Flush, rs)
+flush True (Straight, [Ace,_,_,_,_]) = (RoyalFlush, [Ace, King, Queen, Jack, Ten])
+flush True (Straight, rs) = (StraightFlush, rs)
+flush False x = x
 
 isStraight [a,_,_,_,b] = fromEnum a == fromEnum b + 4
 
