@@ -54,5 +54,4 @@ ranks :: [Card] -> [Rank]
 ranks = sortBy (flip compare) . map rank
 
 isFlush :: [Card] -> Bool
-isFlush cards | (length . group . map suit) cards == 1 = True
-              | otherwise = False
+isFlush = (== 1) . length . group . map suit 
