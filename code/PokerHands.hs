@@ -15,6 +15,11 @@ type Card = (Rank, Suit)
 
 data Category = HighCard | OnePair | TwoPairs | ThreeOfAKind | Straight | Flush | FullHouse | FourOfAKind | StraightFlush | RoyalFlush deriving (Eq,Ord,Show)
 
+ranking cs = (cat,rs) where
+    cat = category gs 
+    rs = concat gs 
+    gs = groups cs
+
 rank :: Card -> Rank
 suit :: Card -> Suit
 card :: String -> Card
@@ -26,12 +31,12 @@ card [r,s] = (charToRank r, charToSuit s)
 
 groups = sortBy (flip (comparing length)) . group . ranks
 
-category [_, _, _, _, _] = HighCard
-category [[_, _], _, _, _] = OnePair
-category [[_, _], [_, _], _] = TwoPairs
-category [[_, _, _], _, _] = ThreeOfAKind
-category [[_, _, _], [_, _]] = FullHouse
 category [[_, _, _, _], _] = FourOfAKind
+category [[_, _, _], [_, _]] = FullHouse
+category [[_, _, _], _, _] = ThreeOfAKind
+category [[_, _], [_, _], _] = TwoPairs
+category [[_, _], _, _, _] = OnePair
+category _ = HighCard
  
 charToRank :: Char -> Rank
 charToRank 'A' = Ace

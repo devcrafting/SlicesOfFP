@@ -1,5 +1,6 @@
 -- 047.hs
 import Test.Hspec
+import PokerHands
 
 type Ranking = (Category, [Rank])
 
