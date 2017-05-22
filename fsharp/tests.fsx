@@ -27,6 +27,19 @@ type ``PokerHands`` () =
 
         test <@ groups (cards "8d Ah Qc 8h As") = [[Ace;Ace];[Eight;Eight];[Queen]] @>
 
+    [<Fact>]
+    member x.``categorize hand`` () =
+        let hands = ["4s 5d Kc Tc 3d"
+                     ;"4s Kd Kc Tc 3d"
+                     ;"4s Kd Kc Tc Td"
+                     ;"Ts Kd Kc Kc 8d"
+                     ;"Ts Kd Kc Tc Td"
+                     ;"Ts Kd Kc Kc Kd"]
+        test <@ List.map (cards >> groups >> category) hands =  
+                    [HighCard; OnePair; TwoPairs
+                    ;ThreeOfAKind; FullHouse; FourOfAKind] @>
+
 ``PokerHands``().``can only contains valid cards``()
 ``PokerHands``().``can rank a hand``()
 ``PokerHands``().``group cards by rank``()
+``PokerHands``().``categorize hand``()

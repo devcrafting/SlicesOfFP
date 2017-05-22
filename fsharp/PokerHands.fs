@@ -3,6 +3,7 @@ module PokerHands
 // NB : discriminated unions are sorted, i.e Two < Three
 type Suit = Hearts | Clubs | Diamonds | Spades
 type Rank = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace
+type Category = HighCard | OnePair | TwoPairs | ThreeOfAKind | Straight | Flush | FullHouse | FourOfAKind | StraightFlush | RoyalFlush
 
 // Could use Enums to simplify this function, but then we should prefix with "Rank." every values
 let charToRank = function
@@ -37,3 +38,12 @@ let rank : Rank * Suit -> Rank = fst
 let ranks = List.map rank >> List.sortDescending 
 
 let groups = ranks >> List.groupBy id >> List.map snd >> List.sortByDescending List.length
+
+let category = function
+
+    | [[_;_;_;_];_] -> FourOfAKind
+    | [[_;_;_];[_;_]] -> FullHouse
+    | [[_;_;_];_;_] -> ThreeOfAKind
+    | [[_;_];[_;_];_] -> TwoPairs
+    | [[_;_];_;_;_] -> OnePair
+    | _ -> HighCard
