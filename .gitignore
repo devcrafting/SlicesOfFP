@@ -188,3 +188,8 @@ TSWLatexianTemp*
 
 # vim stuff
 *.swp
+
+# fsharp
+packages/
+.paket/
+!.paket/paket.bootstrapper.exe
