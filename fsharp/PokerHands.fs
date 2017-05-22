@@ -35,3 +35,5 @@ let cards (hand:string) = hand.Split(' ') |> Seq.map card |> Seq.toList
 let rank : Rank * Suit -> Rank = fst
 
 let ranks = List.map rank >> List.sortDescending 
+
+let groups = ranks >> List.groupBy id >> List.map snd >> List.sortByDescending List.length

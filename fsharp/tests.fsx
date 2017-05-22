@@ -21,5 +21,12 @@ type ``PokerHands`` () =
     member x.``can rank a hand`` () =
         test <@ ranks (cards "8d Ah Qc") = [Ace; Queen; Eight] @>
 
+    [<Fact>]
+    member x.``group cards by rank`` () =
+        test <@ groups (cards "8d Ah Qc 8h 8s") = [[Eight;Eight;Eight];[Ace];[Queen]] @>
+
+        test <@ groups (cards "8d Ah Qc 8h As") = [[Ace;Ace];[Eight;Eight];[Queen]] @>
+
 ``PokerHands``().``can only contains valid cards``()
 ``PokerHands``().``can rank a hand``()
+``PokerHands``().``group cards by rank``()
