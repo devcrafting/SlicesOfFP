@@ -36,6 +36,8 @@ let cards (hand:string) = hand.Split(' ') |> Seq.map card |> Seq.toList
 
 let rank : Card -> Rank = fst
 
+let suit : Card -> Suit = snd
+
 let ranks = List.map rank >> List.sortDescending 
 
 let groups = ranks >> List.groupBy id >> List.map snd >> List.sortByDescending List.length
@@ -50,18 +52,28 @@ let category = function
     | _ -> HighCard
 
 let straight = function
-    | (HighCard, [Ace;Five;_;_;_]) -> (Straight, [Five; Four; Three; Two; Ace])
-    | (HighCard, [Ace;_;_;_;Ten] as r)
-    | (HighCard, [King;_;_;_;Nine] as r) 
-    | (HighCard, [Queen;_;_;_;Eight] as r) 
-    | (HighCard, [Jack;_;_;_;Seven] as r) 
-    | (HighCard, [Ten;_;_;_;Six] as r) 
-    | (HighCard, [Nine;_;_;_;Five] as r) 
-    | (HighCard, [Eight;_;_;_;Four] as r) 
-    | (HighCard, [Seven;_;_;_;Three] as r) 
-    | (HighCard, [Six;_;_;_;Two] as r) -> (Straight, snd r)
+    | HighCard, [Ace;Five;_;_;_] -> (Straight, [Five; Four; Three; Two; Ace])
+    | HighCard, [Ace;_;_;_;Ten] 
+    | HighCard, [King;_;_;_;Nine]  
+    | HighCard, [Queen;_;_;_;Eight]  
+    | HighCard, [Jack;_;_;_;Seven]  
+    | HighCard, [Ten;_;_;_;Six] 
+    | HighCard, [Nine;_;_;_;Five]  
+    | HighCard, [Eight;_;_;_;Four]  
+    | HighCard, [Seven;_;_;_;Three] 
+    | HighCard, [Six;_;_;_;Two] as r -> (Straight, snd r)
+    | r -> r
+
+let isFlush = List.groupBy suit >> List.length >> ((=) 1)
+
+let flushes cards = function
+    | HighCard, c when isFlush cards -> (Flush, c)
+    | Straight, [Ace;_;_;_;_] as r when isFlush cards -> (RoyalFlush, snd r)
+    | Straight, c when isFlush cards -> (StraightFlush, c)
     | r -> r
 
 let ranking cards =
     let groups = groups cards
-    straight (category groups, List.concat groups)
+    (category groups, List.concat groups)
+    |> straight
+    |> flushes cards
